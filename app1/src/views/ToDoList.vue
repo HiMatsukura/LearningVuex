@@ -34,9 +34,9 @@
 
     <!-- 新規登録フォーム -->
     <h2>新しい作業の追加</h2>
-    <form class="add-form" v-on:submit.prevent="doAdd">
+    <form class="add-form" v-on:submit.prevent="add">
     <!-- コメント入力フォーム -->
-    コメント <input type="text" ref="comment">
+    コメント <input type="text" v-model="commentValue" ref="comment">
     <!-- 追加ボタンのモック -->
       <button type="submit">追加</button>
     </form>
@@ -47,28 +47,32 @@
 
 <script>
 
-//import store from '../store'
 import { mapState } from 'vuex'
-import { mapMutations } from 'vuex' 
+import { mapActions } from 'vuex' 
 
 export default {
     name: "ToDoList",
+    data : () => {
+      return {
+        commentValue : ""
+      }
+    },
     computed: {
-        /*todos () {
-            return store.state.todos
-        }*/
-        ...mapState([
-            "todos" // => store.state.todosをthis.todosと記述できる
-        ]),
+        ...mapState({
+            todos : ({todolist : { todos }}) => todos // => store.state.todosをthis.todosと記述できる
+        }),
     },
 
     methods:{
-        ...mapMutations({
+        ...mapActions({
             doAdd: "todolist/doAdd" // => this.$store.commit('doAdd')をthis.doAdd()と記述できる
-            
         }),
         add(){
-            this.doAdd();
+            if(!this.commentValue){
+              return
+            }
+            this.doAdd({commentValue : this.commentValue});
+            this.commentValue = "";
         }
     }
 };
