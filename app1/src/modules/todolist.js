@@ -18,9 +18,9 @@ export const todolist = {
     },
 
     // 状態変更の処理
-    /*doChangeState(item) {
+    doChangeState(item) {
       item.state = item.state ? 0 : 1
-    },*/
+    },
 
     // 削除の処理
     doRemove(state, item) {
