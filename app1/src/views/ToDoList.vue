@@ -57,7 +57,6 @@ export default {
     data : () => {
       return {
         commentValue : "",
-        //item : ""
       }
     },
     computed: {
@@ -85,7 +84,7 @@ export default {
         }*/
 
         delete(){
-            this.doRemove(item);
+            this.doRemove({item : this.item});
 
         }
 

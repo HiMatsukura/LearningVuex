@@ -32,6 +32,10 @@ export const todolist = {
   actions: {
     doAdd ({commit} , {commentValue}) {
       commit("doAdd",{commentValue})
+    },
+
+    doRemove ({commit} , {item}) {
+      commit("doRemove",{item})
     }
   }
 }
