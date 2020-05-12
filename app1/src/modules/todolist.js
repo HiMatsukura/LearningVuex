@@ -6,26 +6,32 @@ export const todolist = {
     todos:[],
   },
   mutations: {
-    doAdd(state){
-        //ref で名前を付けておいた要素を参照
-        var comment = this.$refs.comment
-        //入力がなければ何もしないでreturn
-        if(!comment.value.length){
-            return
-        }
+    doAdd(state,{commentValue}){
         // { 新しいID, コメント, 作業状態 }
         // というオブジェクトを現在の todos リストへ push
         // 作業状態「state」はデフォルト「作業中=0」で作成
         state.todos.push({
             id: 1,//todoStorage.uid++,
-            comment: comment.value,
+            comment: commentValue,
             state: 0
         })
-        //フォーム要素を空にする
-        comment.value = ''
-        
     },
 
+    // 状態変更の処理
+    doChangeState(item) {
+      item.state = item.state ? 0 : 1
+    },
+
+    // 削除の処理
+    doRemove(state, item) {
+      var index = state.todos.indexOf(item)
+      state.todos.splice(index, 1)
+    }
+
   },
-  actions: {}
+  actions: {
+    doAdd ({commit} , {commentValue}) {
+      commit("doAdd",{commentValue})
+    }
+  }
 }

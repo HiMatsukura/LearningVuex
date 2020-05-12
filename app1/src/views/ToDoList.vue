@@ -18,12 +18,16 @@
             <th>{{ item.id }}</th>
             <td>{{ item.comment }}</td>
             <td class="state">
-            <!-- 状態変更ボタンのモック -->
-            <button>{{ item.state }}</button>
-            </td>
-            <td class="button">
-            <!-- 削除ボタンのモック -->
-            <button>削除</button>
+
+            <!-- 状態変更ボタン-->
+            <button v-on:click="doChangeState(item)">
+                {{ item.state }}
+            </button>
+                
+            <!-- 削除ボタン -->
+            <button v-on:click.ctrl="doRemove(item)">
+                削除
+            </button>
             </td>
         </tr>
     </tbody>
@@ -34,9 +38,9 @@
 
     <!-- 新規登録フォーム -->
     <h2>新しい作業の追加</h2>
-    <form class="add-form" v-on:submit.prevent="doAdd">
+    <form class="add-form" v-on:submit.prevent="add">
     <!-- コメント入力フォーム -->
-    コメント <input type="text" ref="comment">
+    コメント <input type="text" v-model="commentValue" ref="comment">
     <!-- 追加ボタンのモック -->
       <button type="submit">追加</button>
     </form>
@@ -46,35 +50,49 @@
 </template>
 
 <script>
-
-//import store from '../store'
 import { mapState } from 'vuex'
-import { mapMutations } from 'vuex' 
-
+import { mapActions } from 'vuex' 
 export default {
     name: "ToDoList",
-    computed: {
-        /*todos () {
-            return store.state.todos
-        }*/
-        ...mapState([
-            "todos" // => store.state.todosをthis.todosと記述できる
-        ]),
+    data : () => {
+      return {
+        commentValue : "",
+        //item : ""
+      }
     },
-
+    computed: {
+        ...mapState({
+            todos : ({todolist : { todos }}) => todos // => store.state.todosをthis.todosと記述できる
+        }),
+    },
     methods:{
-        ...mapMutations({
-            doAdd: "todolist/doAdd" // => this.$store.commit('doAdd')をthis.doAdd()と記述できる
-            
+        ...mapActions({
+            doAdd: "todolist/doAdd", // => this.$store.commit('doAdd')をthis.doAdd()と記述できる
+            doChangeState: "todolist/doChangeState",
+            doRemove: "todolist/doRemove"
         }),
         add(){
-            this.doAdd();
+            if(!this.commentValue){
+              return
+            }
+            this.doAdd({commentValue : this.commentValue});
+            this.commentValue = "";
+        },
+
+        /*change(){
+            this.doChangeState(item);
+
+        }*/
+
+        delete(){
+            this.doRemove(item);
+
         }
+
     }
 };
     
 </script>
 
 <style lang="scss" scoped>
-
 </style>
