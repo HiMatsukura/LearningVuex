@@ -28,16 +28,16 @@
             <th>{{ item.id }}</th>
             <td>{{ item.comment }}</td>
             <td class="state">
-
-            <!-- 状態変更ボタン-->
-            <button v-on:click="doChangeState(item)">
-                {{ labels[item.state] }}
-            </button>
-                
-            <!-- 削除ボタン -->
-            <button v-on:click.ctrl="doRemove(item)">
-                削除
-            </button>
+                <!-- 状態変更ボタン-->
+                <button v-on:click="doChangeState(item)">
+                    {{ labels[item.state] }}
+                </button>
+            </td>
+            <td class="button">  
+                <!-- 削除ボタン -->
+                <button v-on:click.ctrl="doRemove(item)">
+                    削除
+                </button>
             </td>
         </tr>
     </tbody>
@@ -67,13 +67,28 @@ export default {
     data : () => {
       return {
         commentValue : "",
+        options: [
+            { value: -1, label: 'すべて' },
+            { value: 0,  label: '作業中' },
+            { value: 1,  label: '完了' }
+        ]
       }
     },
+    
     computed: {
         ...mapState({
             todos : ({todolist : { todos }}) => todos, // => store.state.todosをthis.todosと記述できる
-            options : ({option : { options }}) => options
+            
         }),
+
+        labels(){
+            
+            return this.options.reduce(function(a, b) {
+                return Object.assign(a, { [b.value]: b.label })
+            }, {})
+            // キーから見つけやすいように、次のように加工したデータを作成
+            // {0: '作業中', 1: '完了', -1: 'すべて'}
+        }
     },
 
     methods:{
@@ -81,7 +96,6 @@ export default {
             doAdd: "todolist/doAdd", // => this.$store.commit('doAdd')をthis.doAdd()と記述できる
             doChangeState: "todolist/doChangeState",
             doRemove: "todolist/doRemove",
-            labels: "todolist/labels"
         }),
         add(){
             if(!this.commentValue){
@@ -98,11 +112,6 @@ export default {
 
         delete(){
             this.doRemove({item : this.item});
-
-        },
-
-        labels(){
-            this.labels();
 
         }
 
