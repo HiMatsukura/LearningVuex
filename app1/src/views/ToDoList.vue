@@ -2,6 +2,16 @@
   <div id="app">
     <h1>チュートリアルToDoリスト</h1>
 
+    <!-- 絞り込みラジオボタン -->
+    <!--<label v-for="(label, key) in options" :key="key">
+      <input type="radio"
+        v-model="current"
+        v-bind:value="label.value">{{label.label}}
+
+    </label>
+    ({{ todos.length }} 件中 {{ computedTodos.length }} 件を表示中 )-->
+
+
     <table>
     <!-- テーブルヘッダー -->
     <thead>
@@ -21,7 +31,7 @@
 
             <!-- 状態変更ボタン-->
             <button v-on:click="doChangeState(item)">
-                {{ item.state }}
+                {{ labels[item.state] }}
             </button>
                 
             <!-- 削除ボタン -->
@@ -61,14 +71,17 @@ export default {
     },
     computed: {
         ...mapState({
-            todos : ({todolist : { todos }}) => todos // => store.state.todosをthis.todosと記述できる
+            todos : ({todolist : { todos }}) => todos, // => store.state.todosをthis.todosと記述できる
+            options : ({option : { options }}) => options
         }),
     },
+
     methods:{
         ...mapActions({
             doAdd: "todolist/doAdd", // => this.$store.commit('doAdd')をthis.doAdd()と記述できる
             doChangeState: "todolist/doChangeState",
-            doRemove: "todolist/doRemove"
+            doRemove: "todolist/doRemove",
+            labels: "todolist/labels"
         }),
         add(){
             if(!this.commentValue){
@@ -78,13 +91,18 @@ export default {
             this.commentValue = "";
         },
 
-        /*change(){
-            this.doChangeState(item);
+        change(){
+            this.doChangeState({item : this.item});
 
-        }*/
+        },
 
         delete(){
             this.doRemove({item : this.item});
+
+        },
+
+        labels(){
+            this.labels();
 
         }
 
