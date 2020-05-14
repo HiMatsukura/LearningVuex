@@ -25,7 +25,6 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "todoList" */ "../views/ToDoList.vue")
   }
-
 ];
 
 const router = new VueRouter({
