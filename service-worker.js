@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.c0b99f5c682528110d16fdac5fce03f8.js"
+  "/LearningVuex/precache-manifest.5ec8994e347fa805fc0f5f48208d10b2.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "app1"});
