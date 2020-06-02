@@ -1,15 +1,15 @@
 <template>
   <div id="app">
+    <link rel="stylesheet" href="main.css">
     <h1>チュートリアルToDoリスト</h1>
 
     <!-- 絞り込みラジオボタン -->
-    <!--<label v-for="(label, key) in options" :key="key">
+    <label v-for="(label, key) in options" :key="key">
       <input type="radio"
         v-model="current"
         v-bind:value="label.value">{{label.label}}
-
     </label>
-    ({{ todos.length }} 件中 {{ computedTodos.length }} 件を表示中 )-->
+    <!--({{ todos.length }} 件中 {{ computedTodos.length }} 件を表示中 )-->
 
     <table>
       <!-- テーブルヘッダー -->
@@ -67,15 +67,14 @@ export default {
         { value: -1, label: "すべて" },
         { value: 0, label: "作業中" },
         { value: 1, label: "完了" }
-      ]
+      ],
+      current: -1 
     };
   },
-
   computed: {
     ...mapState({
       todos: ({ todolist: { todos } }) => todos // => store.state.todosをthis.todosと記述できる
     }),
-
     labels() {
       return this.options.reduce(function(a, b) {
         return Object.assign(a, { [b.value]: b.label });
@@ -84,7 +83,6 @@ export default {
       // {0: '作業中', 1: '完了', -1: 'すべて'}
     }
   },
-
   methods: {
     ...mapActions({
       doAdd: "todolist/doAdd", // => this.$store.commit('doAdd')をthis.doAdd()と記述できる
@@ -98,11 +96,9 @@ export default {
       this.doAdd({ commentValue: this.commentValue });
       this.commentValue = "";
     },
-
     change() {
       this.doChangeState({ item: this.item });
     },
-
     delete() {
       this.doRemove({ item: this.item });
     }

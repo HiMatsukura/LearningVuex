@@ -30,7 +30,7 @@ export const counter = {
   },
   actions: {
     addAsync({ commit }, payload) {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         setTimeout(() => {
           commit("add", payload.amount);
           resolve();
@@ -39,7 +39,7 @@ export const counter = {
     },
 
     subAsync({ commit }, payload) {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         setTimeout(() => {
           commit("sub", payload.amount);
           resolve();
